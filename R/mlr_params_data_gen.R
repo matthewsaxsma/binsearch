@@ -1,4 +1,4 @@
-#' Title
+#' Create correlation matrix based on standardized parameter estimates in MLR model
 #'
 #' @param b1 The coefficient you want to be powered to detect.
 #' @param b2 A second beta coefficient.
@@ -19,7 +19,7 @@
 #' @returns A list containing a vector of means and a matrix of correlations between the variables in the model.
 #' @export
 #'
-#' @examples muvcov(b1 = 0.3, b2 = 0.1, rx1.x2 = 0.2)
+#' @examples mlr_params_data_gen(b1 = 0.3, b2 = 0.1, rx1.x2 = 0.2)
 mlr_params_data_gen <- function(b1 = 0,
                                 b2 = 0,
                                 b3 = 0,

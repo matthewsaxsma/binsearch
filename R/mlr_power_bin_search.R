@@ -22,8 +22,8 @@
 #' @returns A list with one element named 'N' which is the sample size needed.
 #' @export
 #'
-#' @examples mlrssc.bs(b1 = 0.3, b2 = 0.1, rx1.x2 = 0.2, desired_power = 0.80, alpha = 0.05)
-mlrssc.bs <- function(b1 = 0.0,
+#' @examples mlr_power_bin_search(b1 = 0.3, b2 = 0.1, rx1.x2 = 0.2, desired_power = 0.80, alpha = 0.05)
+mlr_power_bin_search <- function(b1 = 0.0,
                       b2 = 0.0,
                       b3 = 0.0,
                       b4 = 0.0,
