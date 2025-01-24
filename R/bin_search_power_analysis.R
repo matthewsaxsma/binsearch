@@ -40,17 +40,30 @@ mlrssc.bs <- function(b1 = 0.0,
                       rx4.x5 = 0.0,
                       desired_power = 0.80,
                       alpha = 0.05,
-                      datasets = 1250){
+                      datasets = 750){
+  cl <- match.call()
+  mlrssc.bs_args_list <- as.list(cl)[-1]
+  betas <- c(b1,b2,b3,b4,b5)
+  correlations_between_preds <- c(rx1.x2,rx1.x3,rx1.x4,rx1.x5,rx2.x3,rx2.x4,rx2.x5,rx3.x4,rx3.x5,rx4.x5)
 
   if(b1 == 0){
-    warning(call. = TRUE, immediate. = TRUE,"careful, b1 does not have a value!")
-    # stop(call. = TRUE, "you need to specify a non-zero value for b1!")
+    stop(call. = FALSE, "You did not specify a value for b1!")
+  }
+  if(any(alpha <= 0, alpha >= 1)){
+    stop(call. = TRUE, "Type 1 error rate must be between 0 and 1!")
+  }
+  if(any(desired_power <= 0, desired_power >= 1)){
+    stop(call. = TRUE, "Desired power must be between 0 and 1!")
+  }
+  if(any(abs(betas) >= 1)){
+    stop(call. = TRUE, "Coefficient estimates must be less than 1 in magnitude!")
+  }
+  if(any(abs(correlations_between_preds) >= 1)){
+    stop(call. = TRUE, "The correlations between predictors must be less than 1 in magnitude!")
   }
   left = 0
   right = 2500
-  cl <- match.call()
-  mlrssc.bs_args_list <- as.list(cl)[-1]
-  muvcov_args <- mlrssc.bs_args_list[grep("b[1-9]|rx",names(mlrssc.bs_args_list))]
+  muvcov_args <- mlrssc.bs_args_list[grep("b|rx",names(mlrssc.bs_args_list))]
   proposed_parameters <- do.call(what = muvcov,
                                  args = muvcov_args)
 
@@ -58,7 +71,7 @@ mlrssc.bs <- function(b1 = 0.0,
             "-------------------\n"))
 
   while (left <= right) {
-    middle = round((left + right) / 2) # NOT the overflow solution (probably won't matter)
+    middle = round((left + right) / 2)
     middle_power = MLR_power_calc(N = middle,
                                   mus = proposed_parameters$mus,
                                   S = proposed_parameters$S,
