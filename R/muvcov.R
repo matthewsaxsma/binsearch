@@ -20,7 +20,7 @@
 #' @export
 #'
 #' @examples muvcov(b1 = 0.3, b2 = 0.1, rx1.x2 = 0.2)
-muvcov <- function(b1 = 0,
+MLR_params_data_gen <- function(b1 = 0,
                    b2 = 0,
                    b3 = 0,
                    b4 = 0,

@@ -92,4 +92,3 @@ mlrssc.bs <- function(b1 = 0.0,
     cat("You need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
     return(list(N = middle))}
 }
-
