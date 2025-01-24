@@ -42,7 +42,7 @@ mlr_power_bin_search <- function(b1 = 0.0,
                       alpha = 0.05,
                       datasets = 750){
   cl <- match.call()
-  mlrssc.bs_args_list <- as.list(cl)[-1]
+  mlr_power_bin_search_args_list <- as.list(cl)[-1]
   betas <- c(b1,b2,b3,b4,b5)
   correlations_between_preds <- c(rx1.x2,rx1.x3,rx1.x4,rx1.x5,rx2.x3,rx2.x4,rx2.x5,rx3.x4,rx3.x5,rx4.x5)
 
@@ -63,7 +63,7 @@ mlr_power_bin_search <- function(b1 = 0.0,
   }
   left = 0
   right = 2500
-  mlr_params_data_gen_args <- mlrssc.bs_args_list[grep("b|rx",names(mlrssc.bs_args_list))]
+  mlr_params_data_gen_args <- mlr_power_bin_search_args_list[grep("b|rx",names(mlr_power_bin_search_args_list))]
   proposed_parameters <- do.call(what = mlr_params_data_gen,
                                  args = mlr_params_data_gen_args)
 
