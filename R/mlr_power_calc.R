@@ -14,8 +14,8 @@
 #' S = matrix(c(1.0,0.2,0.1,
 #'              0.2,1.0,0.3,
 #'              0.1,0.3,1.0), nrow = 3, byrow = TRUE)
-#' MLR_power_calc(N = 150, mus = mus, S = S, alpha = 0.05, datasets = 1000)
-MLR_power_calc <- function(N = NULL,
+#' mlr_power_calc(N = 150, mus = mus, S = S, alpha = 0.05, datasets = 1000)
+mlr_power_calc <- function(N = NULL,
                            mus = NULL,
                            S = NULL,
                            alpha = NULL,

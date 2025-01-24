@@ -63,16 +63,16 @@ mlrssc.bs <- function(b1 = 0.0,
   }
   left = 0
   right = 2500
-  muvcov_args <- mlrssc.bs_args_list[grep("b|rx",names(mlrssc.bs_args_list))]
-  proposed_parameters <- do.call(what = muvcov,
-                                 args = muvcov_args)
+  mlr_params_data_gen_args <- mlrssc.bs_args_list[grep("b|rx",names(mlrssc.bs_args_list))]
+  proposed_parameters <- do.call(what = mlr_params_data_gen,
+                                 args = mlr_params_data_gen_args)
 
   cat(paste("left","\tmiddle","\tright","\n",
             "-------------------\n"))
 
   while (left <= right) {
     middle = round((left + right) / 2)
-    middle_power = MLR_power_calc(N = middle,
+    middle_power = mlr_power_calc(N = middle,
                                   mus = proposed_parameters$mus,
                                   S = proposed_parameters$S,
                                   alpha = alpha,
