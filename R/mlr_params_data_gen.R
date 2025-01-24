@@ -35,12 +35,16 @@ mlr_params_data_gen <- function(b1 = 0,
                                 rx3.x4 = 0,
                                 rx3.x5 = 0,
                                 rx4.x5 = 0) {
+
+  # set the variances to be 1
   rx1.x1 = 1
   rx2.x2 = 1
   rx3.x3 = 1
   rx4.x4 = 1
   rx5.x5 = 1
   ry.y = 1
+
+  # switch variables for easy matrix creating
   rx2.x1 = rx1.x2
   rx3.x1 = rx1.x3
   rx4.x1 = rx1.x4
@@ -51,6 +55,7 @@ mlr_params_data_gen <- function(b1 = 0,
   rx4.x3 = rx3.x4
   rx5.x3 = rx3.x5
   rx5.x4 = rx4.x5
+
   # correlations between predictors and outcome
   rx1.y = b1 + rx1.x2 * b2 + rx1.x3 * b3 + rx1.x4 * b4 + rx1.x5 * b5
   rx2.y = b2 + rx1.x2 * b1 + rx2.x3 * b3 + rx2.x4 * b4 + rx2.x5 * b5
@@ -60,48 +65,14 @@ mlr_params_data_gen <- function(b1 = 0,
 
   # vcov matrix creation
   mus = rep(0, 6)
-  S = matrix(
-    c(
-      rx1.x1,
-      rx1.x2,
-      rx3.x1,
-      rx1.x4,
-      rx1.x5,
-      rx1.y ,
-      rx2.x1,
-      rx2.x2,
-      rx2.x3,
-      rx2.x4,
-      rx2.x5,
-      rx2.y ,
-      rx3.x1,
-      rx3.x2,
-      rx3.x3,
-      rx3.x4,
-      rx3.x5,
-      rx3.y ,
-      rx4.x1,
-      rx4.x2,
-      rx4.x3,
-      rx4.x4,
-      rx4.x5,
-      rx4.y ,
-      rx5.x1,
-      rx5.x2,
-      rx5.x3,
-      rx5.x4,
-      rx5.x5,
-      rx5.y ,
-      rx1.y ,
-      rx2.y ,
-      rx3.y ,
-      rx4.y ,
-      rx5.y ,
-      ry.y
-    ),
-    nrow = 6,
-    byrow = TRUE
-  )
+
+  S = matrix(c(rx1.x1,rx1.x2,rx3.x1,rx1.x4,rx1.x5,rx1.y ,
+               rx2.x1,rx2.x2,rx2.x3,rx2.x4,rx2.x5,rx2.y ,
+               rx3.x1,rx3.x2,rx3.x3,rx3.x4,rx3.x5,rx3.y ,
+               rx4.x1,rx4.x2,rx4.x3,rx4.x4,rx4.x5,rx4.y ,
+               rx5.x1,rx5.x2,rx5.x3,rx5.x4,rx5.x5,rx5.y ,
+               rx1.y ,rx2.y ,rx3.y ,rx4.y ,rx5.y ,ry.y ),
+             nrow = 6,byrow = TRUE)
 
   return(list(mus = mus, S = S))
 }
