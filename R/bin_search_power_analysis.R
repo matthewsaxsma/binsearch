@@ -41,6 +41,11 @@ mlrssc.bs <- function(b1 = 0.0,
                       desired_power = 0.80,
                       alpha = 0.05,
                       datasets = 1250){
+
+  if(b1 == 0){
+    warning(call. = TRUE, immediate. = TRUE,"careful, b1 does not have a value!")
+    # stop(call. = TRUE, "you need to specify a non-zero value for b1!")
+  }
   left = 0
   right = 2500
   cl <- match.call()
