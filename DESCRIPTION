@@ -1,0 +1,20 @@
+Package: binsearch
+Type: Package
+Title: Quicker Power Analyses
+Version: 0.1.0
+Authors@R: c(
+    person(
+      "Matthew", "Saxsma",
+      email = "msaxsma2@illinois.edu",
+      role = c("aut", "cre")
+    )
+  )
+Description: Package implements a binary search algorithm and Monte Carlo
+    simulations to conduct power anaylses.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports:
+    MASS
