@@ -40,7 +40,9 @@ mlr_power_bin_search <- function(b1 = 0.0,
                       rx4.x5 = 0.0,
                       desired_power = 0.80,
                       alpha = 0.05,
-                      datasets = 750){
+                      datasets = 750,
+                      left = 0,
+                      right = 3000){
   cl <- match.call()
   mlr_power_bin_search_args_list <- as.list(cl)[-1]
   betas <- c(b1,b2,b3,b4,b5)
@@ -61,15 +63,16 @@ mlr_power_bin_search <- function(b1 = 0.0,
   if(any(abs(correlations_between_preds) >= 1)){
     stop(call. = TRUE, "The correlations between predictors must be less than 1 in magnitude!")
   }
-  left = 0
-  right = 2500
+  first_left = left
+  first_right = right
+  sam_range <- first_right - first_left
   mlr_params_data_gen_args <- mlr_power_bin_search_args_list[grep("b|rx",names(mlr_power_bin_search_args_list))]
   proposed_parameters <- do.call(what = mlr_params_data_gen,
                                  args = mlr_params_data_gen_args)
 
-  cat(paste("left","\tmiddle","\tright","\n",
-            "-------------------\n"))
+  number_line <- rep("-",times = 100)
 
+  cat(paste(left,paste(number_line,collapse = ""),right,"\n",sep=" "))
   while (left <= right) {
     middle = round((left + right) / 2)
     middle_power = mlr_power_calc(N = middle,
@@ -77,18 +80,32 @@ mlr_power_bin_search <- function(b1 = 0.0,
                                   S = proposed_parameters$S,
                                   alpha = alpha,
                                   datasets = datasets)
-    cat(paste(left, "\t",middle,"\t",right,"\n"))
+
+    cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
+        "*",middle,
+        paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
+
+
     if (middle_power < desired_power) {
       left = middle + 1
     } else if (middle_power > desired_power + 0.01) {
       right = middle - 1
     } else if (middle_power > desired_power &
                middle_power < desired_power + 0.01) {
-      cat("You need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
+      cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
+          "*",middle,
+          paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
+      cat("\n\nYou need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
       return(list(N = middle))
     }
   }
+  if(middle == first_left | middle == first_right){
+    stop(call. = TRUE, "Adjust the bounds of your search space!")
+  }
   if (middle == right|middle==left){
-    cat("You need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
+    cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
+        "*",middle,"*",
+        paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
+    cat("\n\nYou need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
     return(list(N = middle))}
 }
