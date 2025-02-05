@@ -65,16 +65,10 @@ mlr_power_bin_search <- function(b1 = 0.0,
     stop(call. = TRUE, "The correlations between predictors must be less than 1 in magnitude!")
   }
 
-
   first_left = left
   first_right = right
   sam_range <- first_right - first_left
 
-  #
-  # mlr_params_data_gen_args <- args_list[grep("b|rx",names(args_list))]
-  # proposed_parameters <- do.call(what = mlr_params_data_gen,
-  #                                args = mlr_params_data_gen_args)
-  #
   number_line <- rep("-",times = 100)
 
   cat(paste(left,paste(number_line,collapse = ""),right,"\n",sep=" "))
