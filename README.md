@@ -1,0 +1,1 @@
+This is a package for conducting power analyses for a single regression coefficient in a multiple linear regression model. I plan to add features/functions that enable you to do power analyses for effects in other types of models, such as structural equation models and linear mixed models. Stay tuned.
