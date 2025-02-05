@@ -24,27 +24,28 @@
 #'
 #' @examples mlr_power_bin_search(b1 = 0.3, b2 = 0.1, rx1.x2 = 0.2, desired_power = 0.80, alpha = 0.05)
 mlr_power_bin_search <- function(b1 = 0.0,
-                      b2 = 0.0,
-                      b3 = 0.0,
-                      b4 = 0.0,
-                      b5 = 0.0,
-                      rx1.x2 = 0.0,
-                      rx1.x3 = 0.0,
-                      rx1.x4 = 0.0,
-                      rx1.x5 = 0.0,
-                      rx2.x3 = 0.0,
-                      rx2.x4 = 0.0,
-                      rx2.x5 = 0.0,
-                      rx3.x4 = 0.0,
-                      rx3.x5 = 0.0,
-                      rx4.x5 = 0.0,
-                      desired_power = 0.80,
-                      alpha = 0.05,
-                      datasets = 750,
-                      left = 0,
-                      right = 3000){
+                                 b2 = 0.0,
+                                 b3 = 0.0,
+                                 b4 = 0.0,
+                                 b5 = 0.0,
+                                 rx1.x2 = 0.0,
+                                 rx1.x3 = 0.0,
+                                 rx1.x4 = 0.0,
+                                 rx1.x5 = 0.0,
+                                 rx2.x3 = 0.0,
+                                 rx2.x4 = 0.0,
+                                 rx2.x5 = 0.0,
+                                 rx3.x4 = 0.0,
+                                 rx3.x5 = 0.0,
+                                 rx4.x5 = 0.0,
+                                 desired_power = 0.80,
+                                 alpha = 0.05,
+                                 datasets = 750,
+                                 left = 0,
+                                 right = 2000){
   cl <- match.call()
-  mlr_power_bin_search_args_list <- as.list(cl)[-1]
+  args_list <- as.list(cl)[-1]
+
   betas <- c(b1,b2,b3,b4,b5)
   correlations_between_preds <- c(rx1.x2,rx1.x3,rx1.x4,rx1.x5,rx2.x3,rx2.x4,rx2.x5,rx3.x4,rx3.x5,rx4.x5)
 
@@ -63,49 +64,67 @@ mlr_power_bin_search <- function(b1 = 0.0,
   if(any(abs(correlations_between_preds) >= 1)){
     stop(call. = TRUE, "The correlations between predictors must be less than 1 in magnitude!")
   }
+
+
   first_left = left
   first_right = right
   sam_range <- first_right - first_left
-  mlr_params_data_gen_args <- mlr_power_bin_search_args_list[grep("b|rx",names(mlr_power_bin_search_args_list))]
-  proposed_parameters <- do.call(what = mlr_params_data_gen,
-                                 args = mlr_params_data_gen_args)
 
+  #
+  # mlr_params_data_gen_args <- args_list[grep("b|rx",names(args_list))]
+  # proposed_parameters <- do.call(what = mlr_params_data_gen,
+  #                                args = mlr_params_data_gen_args)
+  #
   number_line <- rep("-",times = 100)
 
   cat(paste(left,paste(number_line,collapse = ""),right,"\n",sep=" "))
+
+  power_args <- args_list[grep("b|rx|alpha|datasets",names(args_list))]
+
+
+  # Exploring the search space
+
   while (left <= right) {
     middle = round((left + right) / 2)
-    middle_power = mlr_power_calc(N = middle,
-                                  mus = proposed_parameters$mus,
-                                  S = proposed_parameters$S,
-                                  alpha = alpha,
-                                  datasets = datasets)
 
+    middle_power = do.call(what=mlr_power_calc,
+                           args=as.list(c(N = middle, power_args)))
     cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
-        "*",middle,
+        middle,
         paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
 
-
     if (middle_power < desired_power) {
+
       left = middle + 1
+
     } else if (middle_power > desired_power + 0.01) {
+
       right = middle - 1
+
     } else if (middle_power > desired_power &
                middle_power < desired_power + 0.01) {
+
       cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
-          "*",middle,
+          middle,
           paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
       cat("\n\nYou need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
-      return(list(N = middle))
+      return(invisible(list(N = middle)))
+
     }
   }
+
+  # Error if bounds of sample size search space is not large enough
+
   if(middle == first_left | middle == first_right){
     stop(call. = TRUE, "Adjust the bounds of your search space!")
   }
+
+  # need this condition because otherwise the algorithm might
+
   if (middle == right|middle==left){
     cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
-        "*",middle,"*",
+        middle,
         paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
     cat("\n\nYou need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
-    return(list(N = middle))}
+    return(invisible(list(N = middle)))}
 }

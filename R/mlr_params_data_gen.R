@@ -72,7 +72,8 @@ mlr_params_data_gen <- function(b1 = 0,
                rx4.x1,rx4.x2,rx4.x3,rx4.x4,rx4.x5,rx4.y ,
                rx5.x1,rx5.x2,rx5.x3,rx5.x4,rx5.x5,rx5.y ,
                rx1.y ,rx2.y ,rx3.y ,rx4.y ,rx5.y ,ry.y ),
-             nrow = 6,byrow = TRUE)
+             nrow = 6,
+             byrow = TRUE)
 
   return(list(mus = mus, S = S))
 }

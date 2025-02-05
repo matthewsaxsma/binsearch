@@ -22,7 +22,9 @@ mlr_power_bin_search(
   rx4.x5 = 0,
   desired_power = 0.8,
   alpha = 0.05,
-  datasets = 750
+  datasets = 750,
+  left = 0,
+  right = 2000
 )
 }
 \arguments{
