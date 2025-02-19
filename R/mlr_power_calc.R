@@ -23,6 +23,8 @@
 #' @export
 #'
 #' @examples mlr_power_calc(N = 600, b1 = 0.1, b2 = 0.3, rx1.x2 = 0.25)
+
+
 mlr_power_calc <- function(N = 0,
                            b1 = 0,
                            b2 = 0,
@@ -41,7 +43,6 @@ mlr_power_calc <- function(N = 0,
                            rx4.x5 = 0,
                            alpha = 0.05,
                            datasets = 750){
-
   betas = c(b1,b2,b3,b4,b5)
   correlations_between_preds <- c(rx1.x2,rx1.x3,rx1.x4,rx1.x5,rx2.x3,rx2.x4,rx2.x5,rx3.x4,rx3.x5,rx4.x5)
 
@@ -73,8 +74,7 @@ mlr_power_calc <- function(N = 0,
   rx4.y = b4 + rx1.x4 * b1 + rx2.x4 * b2 + rx3.x4 * b3 + rx4.x5 * b5
   rx5.y = b5 + rx1.x5 * b1 + rx2.x5 * b2 + rx3.x5 * b3 + rx4.x5 * b4
 
-  # vcov matrix creation
-
+  # variance-covariance matrix creation
 
   S = matrix(c(rx1.x1,rx1.x2,rx3.x1,rx1.x4,rx1.x5,rx1.y ,
                rx2.x1,rx2.x2,rx2.x3,rx2.x4,rx2.x5,rx2.y ,
@@ -84,6 +84,7 @@ mlr_power_calc <- function(N = 0,
                rx1.y ,rx2.y ,rx3.y ,rx4.y ,rx5.y ,ry.y ),
              nrow = 6,
              byrow = TRUE)
+
   mus = rep(0, ncol(S))
   pval = numeric(datasets)
   modelformula = as.formula(paste("y ~", paste("x", 1:npred, sep = "", collapse = " + ")))

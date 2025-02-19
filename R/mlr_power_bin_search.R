@@ -40,9 +40,9 @@ mlr_power_bin_search <- function(b1 = 0.0,
                                  rx4.x5 = 0.0,
                                  desired_power = 0.80,
                                  alpha = 0.05,
-                                 datasets = 750,
+                                 datasets = 1750,
                                  left = 0,
-                                 right = 2000){
+                                 right = 2100){
   cl <- match.call()
   args_list <- as.list(cl)[-1]
 
@@ -64,7 +64,6 @@ mlr_power_bin_search <- function(b1 = 0.0,
   if(any(abs(correlations_between_preds) >= 1)){
     stop(call. = TRUE, "The correlations between predictors must be less than 1 in magnitude!")
   }
-
   first_left = left
   first_right = right
   sam_range <- first_right - first_left
@@ -74,7 +73,6 @@ mlr_power_bin_search <- function(b1 = 0.0,
   cat(paste(left,paste(number_line,collapse = ""),right,"\n",sep=" "))
 
   power_args <- args_list[grep("b|rx|alpha|datasets",names(args_list))]
-
 
   # Exploring the search space
 
@@ -98,12 +96,11 @@ mlr_power_bin_search <- function(b1 = 0.0,
     } else if (middle_power > desired_power &
                middle_power < desired_power + 0.01) {
 
-      cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
+            cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
           middle,
           paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
       cat("\n\nYou need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
       return(invisible(list(N = middle)))
-
     }
   }
 
@@ -113,7 +110,7 @@ mlr_power_bin_search <- function(b1 = 0.0,
     stop(call. = TRUE, "Adjust the bounds of your search space!")
   }
 
-  # need this condition because otherwise the algorithm might
+  # need this condition because otherwise the algorithm might not be able to find point of 80% power.
 
   if (middle == right|middle==left){
     cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
@@ -122,3 +119,5 @@ mlr_power_bin_search <- function(b1 = 0.0,
     cat("\n\nYou need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
     return(invisible(list(N = middle)))}
 }
+
+
