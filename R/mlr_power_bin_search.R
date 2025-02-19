@@ -16,8 +16,8 @@
 #' @param rx3.x5 The correlation between predictors 3 and 5.
 #' @param rx4.x5 The correlation between predictors 4 and 5.
 #' @param desired_power The desired power for the test of the first beta coefficient.
-#' @param alpha Type 1 error rate for the significance test of the first beta ceofficient.
-#' @param datasets The number of generated datasets used to calculate power empirically.
+#' @param alpha Type 1 error rate for the significance test of the first beta coefficient.
+#' @param datasets The number of generated data sets used to calculate power empirically.
 #'
 #' @returns A list with one element named 'N' which is the sample size needed.
 #' @export
@@ -42,7 +42,7 @@ mlr_power_bin_search <- function(b1 = 0.0,
                                  alpha = 0.05,
                                  datasets = 1750,
                                  left = 0,
-                                 right = 2100){
+                                 right = 2000){
   cl <- match.call()
   args_list <- as.list(cl)[-1]
 
