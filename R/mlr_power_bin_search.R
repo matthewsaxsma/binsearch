@@ -79,8 +79,9 @@ mlr_power_bin_search <- function(b1 = 0.0,
   while (left <= right) {
     middle = round((left + right) / 2)
 
-    middle_power = do.call(what=mlr_power_calc,
+    middle_power = do.call(what=mlr_power_calc, # this is where the model power calculation function goes
                            args=as.list(c(N = middle, power_args)))
+
     cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
         middle,
         paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
@@ -119,5 +120,3 @@ mlr_power_bin_search <- function(b1 = 0.0,
     cat("\n\nYou need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
     return(invisible(list(N = middle)))}
 }
-
-
