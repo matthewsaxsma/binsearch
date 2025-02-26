@@ -25,27 +25,28 @@
 #' @export
 #'
 #' @examples mlr_power_bin_search(b1 = 0.3, b2 = 0.1, rx1.x2 = 0.2, desired_power = 0.80, alpha = 0.05)
-mlr_power_bin_search <- function(b1 = 0.0,
-                      b2 = 0.0,
-                      b3 = 0.0,
-                      b4 = 0.0,
-                      b5 = 0.0,
-                      rx1.x2 = 0.0,
-                      rx1.x3 = 0.0,
-                      rx1.x4 = 0.0,
-                      rx1.x5 = 0.0,
-                      rx2.x3 = 0.0,
-                      rx2.x4 = 0.0,
-                      rx2.x5 = 0.0,
-                      rx3.x4 = 0.0,
-                      rx3.x5 = 0.0,
-                      rx4.x5 = 0.0,
-                      desired_power = 0.80,
-                      alpha = 0.05,
-                      datasets = 750,
-                      left = 0,
-                      right = 1000,
-                      verbose = TRUE){
+mlr_power_bin_search <- function(
+                                b1 = 0.0,
+                                b2 = 0.0,
+                                b3 = 0.0,
+                                b4 = 0.0,
+                                b5 = 0.0,
+                                rx1.x2 = 0.0,
+                                rx1.x3 = 0.0,
+                                rx1.x4 = 0.0,
+                                rx1.x5 = 0.0,
+                                rx2.x3 = 0.0,
+                                rx2.x4 = 0.0,
+                                rx2.x5 = 0.0,
+                                rx3.x4 = 0.0,
+                                rx3.x5 = 0.0,
+                                rx4.x5 = 0.0,
+                                desired_power = 0.80,
+                                alpha = 0.05,
+                                datasets = 750,
+                                left = 0,
+                                right = 1000,
+                                verbose = TRUE){
   cl <- match.call()
   args_list <- as.list(cl)[-1]
 
@@ -67,15 +68,15 @@ mlr_power_bin_search <- function(b1 = 0.0,
   if(any(abs(correlations_between_preds) >= 1)){
     stop(call. = TRUE, "The correlations between predictors must be less than 1 in magnitude!")
   }
+
   first_left = left
   first_right = right
-  sam_range <- first_right - first_left
+  sam_range = first_right - first_left
 
   if(verbose == TRUE){
     number_line <- rep("-",times = 100)
     cat(paste(left,paste(number_line,collapse = ""),right,"\n",sep=" "))
     }
-  cat(paste(left,paste(number_line,collapse = ""),right,"\n",sep=" "))
 
   power_args <- args_list[grep("b|rx|alpha|datasets",names(args_list))]
 
@@ -86,10 +87,11 @@ mlr_power_bin_search <- function(b1 = 0.0,
 
     middle_power = do.call(what=mlr_power_calc, # this is where the model power calculation function goes
                            args=as.list(c(N = middle, power_args)))
-
-    cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
-        middle,
+    if(verbose == TRUE){
+      cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
+        "N = ", middle,
         paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
+      }
 
     if (middle_power < desired_power) {
 
@@ -103,12 +105,12 @@ mlr_power_bin_search <- function(b1 = 0.0,
                middle_power < desired_power + 0.01) {
 
       if(verbose == TRUE){
-      cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
+        cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
           "N = ",middle,
           paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
-      cat("\n\nYou need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
+        cat("\n\nYou need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
       }
-      return(invisble(list(N = middle)))
+      return(invisible(list(N = middle)))
     }
   }
 
@@ -122,11 +124,12 @@ mlr_power_bin_search <- function(b1 = 0.0,
 
   if (middle == right|middle==left){
     if(verbose == TRUE){
-    cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
+      cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
         "N = ",middle,
         paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
-    cat("\n\nYou need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
-    return(invisible(list(N = middle)))
+      cat("\n\nYou need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
     }
+    return(invisible(list(N = middle)))
   }
+
 }
