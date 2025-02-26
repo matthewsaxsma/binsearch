@@ -16,9 +16,11 @@
 #' @param rx3.x5 The correlation between predictors 3 and 5.
 #' @param rx4.x5 The correlation between predictors 4 and 5.
 #' @param desired_power The desired power for the test of the first beta coefficient.
-#' @param alpha Type 1 error rate for the significance test of the first beta ceofficient.
-#' @param datasets The number of generated datasets used to calculate power empirically.
-#'
+#' @param alpha Type 1 error rate for the significance test of the first beta coefficient.
+#' @param datasets The number of generated data sets used to calculate power empirically.
+#' @param left This is the lower bound of the sample size search space.
+#' @param right This is the upper bound of the sample size search space.
+#' @param verbose Set equal to TRUE if you want to see a visualization of the search algorithm.
 #' @returns A list with one element named 'N' which is the sample size needed.
 #' @export
 #'
@@ -42,7 +44,8 @@ mlr_power_bin_search <- function(b1 = 0.0,
                       alpha = 0.05,
                       datasets = 750,
                       left = 0,
-                      right = 3000){
+                      right = 1000,
+                      verbose = TRUE){
   cl <- match.call()
   mlr_power_bin_search_args_list <- as.list(cl)[-1]
   betas <- c(b1,b2,b3,b4,b5)
@@ -70,9 +73,11 @@ mlr_power_bin_search <- function(b1 = 0.0,
   proposed_parameters <- do.call(what = mlr_params_data_gen,
                                  args = mlr_params_data_gen_args)
 
-  number_line <- rep("-",times = 100)
+  if(verbose == TRUE){
+    number_line <- rep("-",times = 100)
+    cat(paste(left,paste(number_line,collapse = ""),right,"\n",sep=" "))
+    }
 
-  cat(paste(left,paste(number_line,collapse = ""),right,"\n",sep=" "))
   while (left <= right) {
     middle = round((left + right) / 2)
     middle_power = mlr_power_calc(N = middle,
@@ -80,11 +85,11 @@ mlr_power_bin_search <- function(b1 = 0.0,
                                   S = proposed_parameters$S,
                                   alpha = alpha,
                                   datasets = datasets)
-
+    if (verbose == TRUE){
     cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
-        "*",middle,
+        "N = ",middle,
         paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
-
+    }
 
     if (middle_power < desired_power) {
       left = middle + 1
@@ -92,10 +97,13 @@ mlr_power_bin_search <- function(b1 = 0.0,
       right = middle - 1
     } else if (middle_power > desired_power &
                middle_power < desired_power + 0.01) {
+
+      if(verbose == TRUE){
       cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
-          "*",middle,
+          "N = ",middle,
           paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
       cat("\n\nYou need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
+      }
       return(list(N = middle))
     }
   }
@@ -103,9 +111,11 @@ mlr_power_bin_search <- function(b1 = 0.0,
     stop(call. = TRUE, "Adjust the bounds of your search space!")
   }
   if (middle == right|middle==left){
+    if(verbose == TRUE){
     cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
-        "*",middle,"*",
+        "N = ",middle,
         paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
     cat("\n\nYou need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
+    }
     return(list(N = middle))}
 }

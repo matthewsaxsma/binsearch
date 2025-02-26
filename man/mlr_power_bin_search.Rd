@@ -22,7 +22,10 @@ mlr_power_bin_search(
   rx4.x5 = 0,
   desired_power = 0.8,
   alpha = 0.05,
-  datasets = 750
+  datasets = 750,
+  left = 0,
+  right = 1000,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -58,9 +61,15 @@ mlr_power_bin_search(
 
 \item{desired_power}{The desired power for the test of the first beta coefficient.}
 
-\item{alpha}{Type 1 error rate for the significance test of the first beta ceofficient.}
+\item{alpha}{Type 1 error rate for the significance test of the first beta coefficient.}
 
-\item{datasets}{The number of generated datasets used to calculate power empirically.}
+\item{datasets}{The number of generated data sets used to calculate power empirically.}
+
+\item{left}{This is the lower bound of the sample size search space.}
+
+\item{right}{This is the upper bound of the sample size search space.}
+
+\item{verbose}{Set equal to TRUE if you want to see a visualization of the search algorithm.}
 }
 \value{
 A list with one element named 'N' which is the sample size needed.
