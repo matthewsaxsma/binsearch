@@ -78,8 +78,7 @@ mlr_power_bin_search <- function(
     cat(paste(left,paste(number_line,collapse = ""),right,"\n",sep=" "))
     }
 
-  power_args <- args_list[grep("b|rx|alpha|datasets",names(args_list))]
-
+  power_args <- args_list[grep("^b|rx|alpha|datasets",names(args_list))]
   # Exploring the search space
 
   while (left <= right) {
@@ -110,7 +109,7 @@ mlr_power_bin_search <- function(
           paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
         cat("\n\nYou need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
       }
-      return(invisible(list(N = middle)))
+      return(middle)
     }
   }
 
@@ -129,7 +128,6 @@ mlr_power_bin_search <- function(
         paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
       cat("\n\nYou need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
     }
-    return(invisible(list(N = middle)))
+    return(middle)
   }
-
 }
