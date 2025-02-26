@@ -2,31 +2,72 @@
 % Please edit documentation in R/mlr_power_calc.R
 \name{mlr_power_calc}
 \alias{mlr_power_calc}
-\title{Power of test for first beta coefficient}
+\title{Power calculation for coefficient of multiple linear regression model}
 \usage{
-mlr_power_calc(N = NULL, mus = NULL, S = NULL, alpha = NULL, datasets = NULL)
+mlr_power_calc(
+  N = 0,
+  b1 = 0,
+  b2 = 0,
+  b3 = 0,
+  b4 = 0,
+  b5 = 0,
+  rx1.x2 = 0,
+  rx1.x3 = 0,
+  rx1.x4 = 0,
+  rx1.x5 = 0,
+  rx2.x3 = 0,
+  rx2.x4 = 0,
+  rx2.x5 = 0,
+  rx3.x4 = 0,
+  rx3.x5 = 0,
+  rx4.x5 = 0,
+  alpha = 0.05,
+  datasets = 750
+)
 }
 \arguments{
-\item{N}{The sample size.}
+\item{N}{The sample size}
 
-\item{mus}{Vector of means.}
+\item{b1}{The coefficient you want to be powered to detect.}
 
-\item{S}{Correlation matrix of variables.}
+\item{b2}{A second beta coefficient.}
+
+\item{b3}{A third beta coefficient.}
+
+\item{b4}{A fourth beta coefficient.}
+
+\item{b5}{The fifth beta coefficient.}
+
+\item{rx1.x2}{The correlation between predictors 1 and 2.}
+
+\item{rx1.x3}{The correlation between predictors 1 and 3.}
+
+\item{rx1.x4}{The correlation between predictors 1 and 4.}
+
+\item{rx1.x5}{The correlation between predictors 1 and 5.}
+
+\item{rx2.x3}{The correlation between predictors 2 and 3.}
+
+\item{rx2.x4}{The correlation between predictors 2 and 4.}
+
+\item{rx2.x5}{The correlation between predictors 2 and 5.}
+
+\item{rx3.x4}{The correlation between predictors 3 and 4.}
+
+\item{rx3.x5}{The correlation between predictors 3 and 5.}
+
+\item{rx4.x5}{The correlation between predictors 4 and 5.}
 
 \item{alpha}{Type 1 error rate for the significance test of the first beta ceofficient.}
 
 \item{datasets}{The number of generated datasets used to calculate power empirically.}
 }
 \value{
-A numeric vector of length 1 which contains the power of the test.
+Returns the power of the test
 }
 \description{
-Power of test for first beta coefficient
+Power calculation for coefficient of multiple linear regression model
 }
 \examples{
-mus = c(0,0,0)
-S = matrix(c(1.0,0.2,0.1,
-             0.2,1.0,0.3,
-             0.1,0.3,1.0), nrow = 3, byrow = TRUE)
-mlr_power_calc(N = 150, mus = mus, S = S, alpha = 0.05, datasets = 1000)
+mlr_power_calc(N = 600, b1 = 0.1, b2 = 0.3, rx1.x2 = 0.25)
 }
