@@ -34,9 +34,9 @@ mlr_power_bin_search <- function(model = NULL,
     middle_power = do.call(what=mlr_power_calc, # this is where the model power calculation function goes
                            args=as.list(c(N = middle, power_args)))
     if(verbose == TRUE){
-      cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
+      cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sample_range)), collapse = ""),
           "N = ", middle,
-          paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
+          paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sample_range))),collapse = ""),"\r",sep = "")
     }
 
     if (middle_power < desired_power) {
@@ -51,9 +51,9 @@ mlr_power_bin_search <- function(model = NULL,
                middle_power < desired_power + 0.01) {
 
       if(verbose == TRUE){
-        cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
+        cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sample_range)), collapse = ""),
             "N = ",middle,
-            paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
+            paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sample_range))),collapse = ""),"\r",sep = "")
         cat("\n\nYou need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
       }
       return(middle)
@@ -70,9 +70,9 @@ mlr_power_bin_search <- function(model = NULL,
 
   if (middle == right|middle==left){
     if(verbose == TRUE){
-      cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
+      cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sample_range)), collapse = ""),
           "N = ",middle,
-          paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sam_range))),collapse = ""),"\r",sep = "")
+          paste(rep(" ", times = length(number_line) * (1 - ((middle - first_left)/sample_range))),collapse = ""),"\r",sep = "")
       cat("\n\nYou need ",middle," participants for ",desired_power*100,"% power to detect a standardized beta coefficient of ",b1,".\n\n",sep = "")
     }
     return(middle)
