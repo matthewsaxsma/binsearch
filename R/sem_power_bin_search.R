@@ -6,7 +6,7 @@ factor1 ~~ 1*factor1
 factor2 ~~ 1*factor2
 '
 
-mlr_power_bin_search <- function(model = NULL,
+binsearch_sem_power <- function(model = NULL,
                                  desired_power = 0.80,
                                  alpha = 0.05,
                                  datasets = 750,
