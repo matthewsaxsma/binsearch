@@ -5,21 +5,7 @@
 \title{Power analysis via binary search}
 \usage{
 mlr_power_bin_search(
-  b1 = 0,
-  b2 = 0,
-  b3 = 0,
-  b4 = 0,
-  b5 = 0,
-  rx1.x2 = 0,
-  rx1.x3 = 0,
-  rx1.x4 = 0,
-  rx1.x5 = 0,
-  rx2.x3 = 0,
-  rx2.x4 = 0,
-  rx2.x5 = 0,
-  rx3.x4 = 0,
-  rx3.x5 = 0,
-  rx4.x5 = 0,
+  model = NULL,
   desired_power = 0.8,
   alpha = 0.05,
   datasets = 750,
@@ -29,6 +15,18 @@ mlr_power_bin_search(
 )
 }
 \arguments{
+\item{desired_power}{The desired power for the test of the first beta coefficient.}
+
+\item{alpha}{Type 1 error rate for the significance test of the first beta coefficient.}
+
+\item{datasets}{The number of generated data sets used to calculate power empirically.}
+
+\item{left}{This is the lower bound of the sample size search space.}
+
+\item{right}{This is the upper bound of the sample size search space.}
+
+\item{verbose}{Set equal to TRUE if you want to see a visualization of the search algorithm.}
+
 \item{b1}{The coefficient you want to be powered to detect.}
 
 \item{b2}{A second beta coefficient.}
@@ -58,18 +56,6 @@ mlr_power_bin_search(
 \item{rx3.x5}{The correlation between predictors 3 and 5.}
 
 \item{rx4.x5}{The correlation between predictors 4 and 5.}
-
-\item{desired_power}{The desired power for the test of the first beta coefficient.}
-
-\item{alpha}{Type 1 error rate for the significance test of the first beta coefficient.}
-
-\item{datasets}{The number of generated data sets used to calculate power empirically.}
-
-\item{left}{This is the lower bound of the sample size search space.}
-
-\item{right}{This is the upper bound of the sample size search space.}
-
-\item{verbose}{Set equal to TRUE if you want to see a visualization of the search algorithm.}
 }
 \value{
 A list with one element named 'N' which is the sample size needed.
