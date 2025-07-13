@@ -31,8 +31,8 @@ mlr_power_bin_search <- function(model = NULL,
   while (left <= right) {
     middle = round((left + right) / 2)
 
-    middle_power = do.call(what=mlr_power_calc, # this is where the model power calculation function goes
-                           args=as.list(c(N = middle, power_args)))
+    middle_power = do.call(what = mlr_power_calc, # this is where the model power calculation function goes
+                           args = as.list(c(N = middle, power_args)))
     if(verbose == TRUE){
       cat(paste(rep(" ",times = length(number_line) * ((middle - first_left)/sam_range)), collapse = ""),
           "N = ", middle,
